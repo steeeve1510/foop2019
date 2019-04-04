@@ -12,6 +12,7 @@ public class Cat implements Player {
     public Cat(CatClient catClient, Position position) {
         this.catClient = catClient;
         this.position = position;
+        this.catClient.setCat(this);
     }
 
     @Override
@@ -37,7 +38,8 @@ public class Cat implements Player {
     @Override
     public void update(Game game) {
         // TODO calculate cat view out of game
-        CatView catView = new CatView();
+
+        CatView catView = new CatView(position);
         catClient.render(catView);
     }
 

@@ -21,7 +21,7 @@ public class MoveLeftCommand implements Command {
         var currentCoordinate = player.getPosition().getCoordinate();
         var currentLayer = player.getPosition().getLayer();
 
-        if (0 <= currentCoordinate.getX()) {
+        if (0 >= currentCoordinate.getX()) {
             return;
         }
 

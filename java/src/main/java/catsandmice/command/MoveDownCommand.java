@@ -21,7 +21,7 @@ public class MoveDownCommand implements Command {
         var currentCoordinate = player.getPosition().getCoordinate();
         var currentLayer = player.getPosition().getLayer();
 
-        if (0 <= currentCoordinate.getY()) {
+        if (0 >= currentCoordinate.getY()) {
             return;
         }
 

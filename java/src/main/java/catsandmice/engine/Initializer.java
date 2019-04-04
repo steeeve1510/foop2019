@@ -1,17 +1,15 @@
 package catsandmice.engine;
 
-import catsandmice.model.Board;
-import catsandmice.model.Coordinate;
-import catsandmice.model.Game;
-import catsandmice.model.Subway;
+import catsandmice.client.cat.CatClient;
+import catsandmice.client.cat.CatUserClient;
+import catsandmice.model.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class Initializer {
 
-    private Config config;
+    private final Config config;
 
     Initializer(Config config) {
         this.config = config;
@@ -26,29 +24,31 @@ class Initializer {
 
         var subways = new HashSet<Subway>();
         for(var i = 0; i < config.getNumberOfSubways(); i++) {
-            var subway = createSubway(config.getHeight(), config.getWidth(), subways);
+            var subway = createSubway(subways);
             subways.add(subway);
         }
 
         var board = new Board(config.getHeight(), config.getWidth(), subways);
 
+        var catClient = new CatUserClient();
+        var cat = getCat(catClient, board);
 
-        // create UI with a Cat or a Mouse
-        // create random bots
+        List<Cat> cats = Arrays.asList(cat);
+        List<Mouse> mice = new ArrayList<>();
 
-        return null;
+        return new Game(board, subways.iterator().next(), mice, cats);
     }
 
-    private Subway createSubway(int maxHeight, int maxWidth, Set<Subway> subways) {
+    private Subway createSubway(Set<Subway> subways) {
         var usedEntrances = subways.stream()
                 .flatMap(s -> s.getEntrances().stream())
                 .collect(Collectors.toSet());
         var chosenEntrances = new HashSet<Coordinate>();
 
-        var entrance = getNewEntrance(maxHeight, maxWidth, usedEntrances, chosenEntrances);
+        var entrance = getNewEntrance(config.getHeight(), config.getWidth(), usedEntrances, chosenEntrances);
         chosenEntrances.add(entrance);
 
-        var exit = getNewEntrance(maxHeight, maxWidth, usedEntrances, chosenEntrances);
+        var exit = getNewEntrance(config.getHeight(), config.getWidth(), usedEntrances, chosenEntrances);
         chosenEntrances.add(exit);
 
         return new Subway(chosenEntrances);
@@ -70,5 +70,12 @@ class Initializer {
         var y = (int) (maxHeight * Math.random());
 
         return new Coordinate(x, y);
+    }
+
+    private Cat getCat(CatClient catClient, Board board) {
+        var coordinate = getRandomCoordinate(config.getHeight(), config.getWidth());
+
+        var position = new Position(coordinate, board);
+        return new Cat(catClient, position);
     }
 }

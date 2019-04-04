@@ -13,6 +13,7 @@ public class Mouse implements Player {
     public Mouse(MouseClient mouseClient, Position position) {
         this.mouseClient = mouseClient;
         this.position = position;
+        this.mouseClient.setMouse(this);
     }
 
     public boolean isDead() {

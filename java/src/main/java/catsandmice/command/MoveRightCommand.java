@@ -23,7 +23,7 @@ public class MoveRightCommand implements Command {
         var currentCoordinate = player.getPosition().getCoordinate();
         var currentLayer = player.getPosition().getLayer();
 
-        if (maxWidth >= currentCoordinate.getX() + 1) {
+        if (maxWidth <= currentCoordinate.getX() + 1) {
             return;
         }
 
