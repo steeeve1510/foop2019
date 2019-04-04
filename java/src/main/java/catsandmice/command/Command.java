@@ -8,10 +8,9 @@ import catsandmice.model.Game;
 public interface Command {
 
     /**
-     * This method is called by the engine if the command is selected by a player
+     * This method is called by the engine if the command is selected by a player and executes a command
      *
      * @param game the current state of the game
-     * @return the state of the game after the command is executed
      */
-    Game execute(Game game);
+    void execute(Game game);
 }

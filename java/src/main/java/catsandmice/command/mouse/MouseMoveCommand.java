@@ -6,12 +6,11 @@ import catsandmice.model.Game;
 public abstract class MouseMoveCommand implements Command {
 
     @Override
-    public Game execute(Game game) {
+    public void execute(Game game) {
         if (game.getFrameCounter() % 2 == 0) {
-            return game;
+            return;
         }
-        Command command = getMoveCommand();
-        return command.execute(game);
+        getMoveCommand().execute(game);
     }
 
     abstract Command getMoveCommand();

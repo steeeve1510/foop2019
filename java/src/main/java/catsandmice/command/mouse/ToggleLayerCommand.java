@@ -1,9 +1,7 @@
 package catsandmice.command.mouse;
 
 import catsandmice.command.Command;
-import catsandmice.model.Game;
-import catsandmice.model.Mouse;
-import catsandmice.model.Player;
+import catsandmice.model.*;
 
 /**
  * This command changes the layer of a mouse
@@ -19,7 +17,26 @@ public class ToggleLayerCommand implements Command {
     }
 
     @Override
-    public Game execute(Game game) {
+    public void execute(Game game) {
+        var currentCoordinate = mouse.getPosition().getCoordinate();
+        var currentLayer = mouse.getPosition().getLayer();
+
+        var subway = findSubwayWithEntrance(currentCoordinate, game);
+        if (subway == null) {
+            return;
+        }
+
+        Layer newLayer;
+        if (currentLayer.equals(game.getBoard())) {
+            newLayer = subway;
+        } else {
+            newLayer = game.getBoard();
+        }
+        var newPosition = new Position(currentCoordinate, newLayer);
+        mouse.setPosition(newPosition);
+    }
+
+    private Subway findSubwayWithEntrance(Coordinate entrance, Game game) {
         return null;
     }
 }

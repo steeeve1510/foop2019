@@ -1,16 +1,16 @@
 package catsandmice.model;
 
-import java.util.List;
+import java.util.Set;
 
 public class Subway implements Layer {
 
-    private List<Coordinate> entrances;
+    private Set<Coordinate> entrances;
 
-    public Subway(List<Coordinate> entrances) {
+    public Subway(Set<Coordinate> entrances) {
         this.entrances = entrances;
     }
 
-    public List<Coordinate> getEntrances() {
+    public Set<Coordinate> getEntrances() {
         return entrances;
     }
 }
