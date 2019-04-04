@@ -1,7 +1,6 @@
 package catsandmice.model;
 
-
-import java.util.List;
+import java.util.Set;
 
 public class Game {
 
@@ -10,10 +9,10 @@ public class Game {
     private Board board;
     private Subway goalSubway;
 
-    private List<Mouse> mice;
-    private List<Cat> cats;
+    private Set<Mouse> mice;
+    private Set<Cat> cats;
 
-    public Game(Board board, Subway goalSubway, List<Mouse> mice, List<Cat> cats) {
+    public Game(Board board, Subway goalSubway, Set<Mouse> mice, Set<Cat> cats) {
         this.board = board;
         this.goalSubway = goalSubway;
         this.mice = mice;
@@ -32,11 +31,11 @@ public class Game {
         return goalSubway;
     }
 
-    public List<Mouse> getMice() {
+    public Set<Mouse> getMice() {
         return mice;
     }
 
-    public List<Cat> getCats() {
+    public Set<Cat> getCats() {
         return cats;
     }
 

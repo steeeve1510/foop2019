@@ -33,8 +33,9 @@ class Initializer {
         var catClient = new CatUserClient();
         var cat = getCat(catClient, surface);
 
-        List<Cat> cats = Arrays.asList(cat);
-        List<Mouse> mice = new ArrayList<>();
+        Set<Cat> cats = new HashSet<>();
+        cats.add(cat);
+        Set<Mouse> mice = new HashSet<>();
 
         return new Game(board, subways.iterator().next(), mice, cats);
     }

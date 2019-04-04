@@ -44,6 +44,8 @@ public class Cat implements Player {
 
     @Override
     public void update(Game game) {
+        var cats = game.getCats();
+
         var miceOnSurface = game.getMice().stream()
                 .filter(m -> m.getPosition().getLayer().equals(game.getBoard().getSurface()))
                 .collect(Collectors.toSet());
@@ -58,7 +60,7 @@ public class Cat implements Player {
                 .flatMap(s -> s.getEntrances().stream())
                 .collect(Collectors.toSet());
 
-        CatView catView = new CatView(position, aliveMiceOnSurface, deadMiceOnSurface, subwayEntrances);
+        CatView catView = new CatView(position, cats, aliveMiceOnSurface, deadMiceOnSurface, subwayEntrances);
         catClient.render(catView);
     }
 

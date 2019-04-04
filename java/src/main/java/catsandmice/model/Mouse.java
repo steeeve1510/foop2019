@@ -4,6 +4,8 @@ import catsandmice.client.mouse.MouseClient;
 import catsandmice.client.mouse.MouseView;
 import catsandmice.command.Command;
 
+import java.util.stream.Collectors;
+
 public class Mouse implements Player {
 
     private MouseClient mouseClient;
@@ -46,8 +48,25 @@ public class Mouse implements Player {
 
     @Override
     public void update(Game game) {
-        // TODO calculate MouseView
-        MouseView mouseView = new MouseView();
+
+        var miceOnSurface = game.getMice().stream()
+                .filter(m -> m.getPosition().getLayer().equals(position.getLayer()))
+                .collect(Collectors.toSet());
+        var aliveMiceOnCurrentLayer = miceOnSurface.stream()
+                .filter(m -> !m.isDead())
+                .collect(Collectors.toSet());
+        var deadMiceOnCurrentLayer = miceOnSurface.stream()
+                .filter(Mouse::isDead)
+                .collect(Collectors.toSet());
+
+        var cats = game.getCats().stream()
+                .filter(c -> c.getPosition().getLayer().equals(position.getLayer()))
+                .collect(Collectors.toSet());
+
+        var subways = game.getBoard().getSubways();
+        var goalSubway = game.getGoalSubway();
+
+        MouseView mouseView = new MouseView(position, aliveMiceOnCurrentLayer, deadMiceOnCurrentLayer, cats, subways, goalSubway);
         mouseClient.render(mouseView);
     }
 }
