@@ -13,9 +13,11 @@ import java.util.Set;
 public class ToggleLayerCommand implements Command {
 
     private Mouse mouse;
+    private Set<Coordinate> catsLastSeen;
 
-    public ToggleLayerCommand(Mouse mouse) {
+    public ToggleLayerCommand(Mouse mouse, Set<Coordinate> catsLastSeen) {
         this.mouse = mouse;
+        this.catsLastSeen = catsLastSeen;
     }
 
     @Override
@@ -32,6 +34,7 @@ public class ToggleLayerCommand implements Command {
         Layer newLayer;
         if (currentLayer.equals(surface)) {
             newLayer = subway;
+            subway.setCatsLastSeen(catsLastSeen);
         } else {
             newLayer = surface;
         }
