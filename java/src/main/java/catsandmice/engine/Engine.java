@@ -28,6 +28,7 @@ public class Engine {
 
             // get next moves
             var commands = players.stream()
+                    .filter(p -> !p.isDead())
                     .map(Player::getNextMove)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());

@@ -25,7 +25,6 @@ public class MoveUpCommand implements Command {
         var currentLayer = player.getPosition().getLayer();
 
         if (maxHeight <= currentCoordinate.getY() + 1) {
-            System.out.println("Skip");
             return;
         }
 

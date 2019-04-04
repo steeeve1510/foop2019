@@ -26,6 +26,11 @@ public class Cat implements Player {
     }
 
     @Override
+    public boolean isDead() {
+        return false;
+    }
+
+    @Override
     public Command getNextMove() {
         return catClient.getNextMove();
     }
