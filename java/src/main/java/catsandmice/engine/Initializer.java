@@ -21,17 +21,17 @@ class Initializer {
      * @return a new game
      */
     Game initializeGame() {
-
+        var surface = new Surface();
         var subways = new HashSet<Subway>();
         for(var i = 0; i < config.getNumberOfSubways(); i++) {
             var subway = createSubway(subways);
             subways.add(subway);
         }
 
-        var board = new Board(config.getHeight(), config.getWidth(), subways);
+        var board = new Board(config.getHeight(), config.getWidth(), surface, subways);
 
         var catClient = new CatUserClient();
-        var cat = getCat(catClient, board);
+        var cat = getCat(catClient, surface);
 
         List<Cat> cats = Arrays.asList(cat);
         List<Mouse> mice = new ArrayList<>();
@@ -72,10 +72,10 @@ class Initializer {
         return new Coordinate(x, y);
     }
 
-    private Cat getCat(CatClient catClient, Board board) {
+    private Cat getCat(CatClient catClient, Surface surface) {
         var coordinate = getRandomCoordinate(config.getHeight(), config.getWidth());
 
-        var position = new Position(coordinate, board);
+        var position = new Position(coordinate, surface);
         return new Cat(catClient, position);
     }
 }

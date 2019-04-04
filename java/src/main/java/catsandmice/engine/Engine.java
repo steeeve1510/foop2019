@@ -1,6 +1,8 @@
 package catsandmice.engine;
 
+import catsandmice.model.Cat;
 import catsandmice.model.Game;
+import catsandmice.model.Mouse;
 import catsandmice.model.Player;
 
 import java.util.Objects;
@@ -71,9 +73,18 @@ public class Engine {
      * Checks if any mice and cats are on the same field on the surface. If so the mouse dies.
      *
      * @param game the current state of the game
-     * @return the state of the game with mice been marked as killed
      */
     private void killMice(Game game) {
+        var catPositions = game.getCats().stream()
+                .map(Cat::getPosition)
+                .collect(Collectors.toSet());
+
+        for (Mouse mouse : game.getMice()) {
+            var mousePosition = mouse.getPosition();
+            if (catPositions.contains(mousePosition)) {
+                mouse.kill();
+            }
+        }
     }
 
     /**
