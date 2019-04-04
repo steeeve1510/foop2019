@@ -91,7 +91,7 @@ public class Engine {
      * Determines if the game is over, if so the name of the winner (either 'Cats' or 'Mice') is returned
      *
      * @param game the current state of the game
-     * @return either 'Cats' or 'Mice' it the game is over, otherwise null
+     * @return either 'Cats' or 'Mice' if the game is over, otherwise null
      */
     private String getWinner(Game game) {
         if (game.getFrameCounter() < 20) {

@@ -4,6 +4,8 @@ import catsandmice.client.cat.CatClient;
 import catsandmice.client.cat.CatView;
 import catsandmice.command.Command;
 
+import java.util.stream.Collectors;
+
 public class Cat implements Player {
 
     private CatClient catClient;
@@ -42,9 +44,21 @@ public class Cat implements Player {
 
     @Override
     public void update(Game game) {
-        // TODO calculate cat view out of game
+        var miceOnSurface = game.getMice().stream()
+                .filter(m -> m.getPosition().getLayer().equals(game.getBoard().getSurface()))
+                .collect(Collectors.toSet());
+        var aliveMiceOnSurface = miceOnSurface.stream()
+                .filter(m -> !m.isDead())
+                .collect(Collectors.toSet());
+        var deadMiceOnSurface = miceOnSurface.stream()
+                .filter(Mouse::isDead)
+                .collect(Collectors.toSet());
 
-        CatView catView = new CatView(position);
+        var subwayEntrances = game.getBoard().getSubways().stream()
+                .flatMap(s -> s.getEntrances().stream())
+                .collect(Collectors.toSet());
+
+        CatView catView = new CatView(position, aliveMiceOnSurface, deadMiceOnSurface, subwayEntrances);
         catClient.render(catView);
     }
 
