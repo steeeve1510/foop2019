@@ -1,9 +1,6 @@
 package catsandmice.client.mouse;
 
-import catsandmice.model.Cat;
-import catsandmice.model.Mouse;
-import catsandmice.model.Position;
-import catsandmice.model.Subway;
+import catsandmice.model.*;
 
 import java.util.Set;
 
@@ -13,13 +10,13 @@ import java.util.Set;
 public class MouseView {
 
     private Position position;
-    private Set<Mouse> mice;
-    private Set<Mouse> deadMice;
-    private Set<Cat> cats;
+    private Set<Coordinate> mice;
+    private Set<Coordinate> deadMice;
+    private Set<Coordinate> cats;
     private Set<Subway> subways;
     private Subway goalSubway;
 
-    public MouseView(Position position, Set<Mouse> mice, Set<Mouse> deadMice, Set<Cat> cats, Set<Subway> subways, Subway goalSubway) {
+    public MouseView(Position position, Set<Coordinate> mice, Set<Coordinate> deadMice, Set<Coordinate> cats, Set<Subway> subways, Subway goalSubway) {
         this.position = position;
         this.mice = mice;
         this.deadMice = deadMice;
@@ -32,15 +29,15 @@ public class MouseView {
         return position;
     }
 
-    public Set<Mouse> getMice() {
+    public Set<Coordinate> getMice() {
         return mice;
     }
 
-    public Set<Mouse> getDeadMice() {
+    public Set<Coordinate> getDeadMice() {
         return deadMice;
     }
 
-    public Set<Cat> getCats() {
+    public Set<Coordinate> getCats() {
         return cats;
     }
 

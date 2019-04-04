@@ -44,16 +44,20 @@ public class Cat implements Player {
 
     @Override
     public void update(Game game) {
-        var cats = game.getCats();
+        var cats = game.getCats().stream()
+                .map(c -> c.getPosition().getCoordinate())
+                .collect(Collectors.toSet());
 
         var miceOnSurface = game.getMice().stream()
                 .filter(m -> m.getPosition().getLayer().equals(game.getBoard().getSurface()))
                 .collect(Collectors.toSet());
         var aliveMiceOnSurface = miceOnSurface.stream()
                 .filter(m -> !m.isDead())
+                .map(m -> m.getPosition().getCoordinate())
                 .collect(Collectors.toSet());
         var deadMiceOnSurface = miceOnSurface.stream()
                 .filter(Mouse::isDead)
+                .map(m -> m.getPosition().getCoordinate())
                 .collect(Collectors.toSet());
 
         var subwayEntrances = game.getBoard().getSubways().stream()

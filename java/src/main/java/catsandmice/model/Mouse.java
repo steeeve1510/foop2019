@@ -4,6 +4,7 @@ import catsandmice.client.mouse.MouseClient;
 import catsandmice.client.mouse.MouseView;
 import catsandmice.command.Command;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Mouse implements Player {
@@ -49,19 +50,28 @@ public class Mouse implements Player {
     @Override
     public void update(Game game) {
 
-        var miceOnSurface = game.getMice().stream()
+        var miceOnCurrentLayer = game.getMice().stream()
                 .filter(m -> m.getPosition().getLayer().equals(position.getLayer()))
                 .collect(Collectors.toSet());
-        var aliveMiceOnCurrentLayer = miceOnSurface.stream()
+        var aliveMiceOnCurrentLayer = miceOnCurrentLayer.stream()
                 .filter(m -> !m.isDead())
+                .map(m -> m.getPosition().getCoordinate())
                 .collect(Collectors.toSet());
-        var deadMiceOnCurrentLayer = miceOnSurface.stream()
+        var deadMiceOnCurrentLayer = miceOnCurrentLayer.stream()
                 .filter(Mouse::isDead)
+                .map(m -> m.getPosition().getCoordinate())
                 .collect(Collectors.toSet());
 
-        var cats = game.getCats().stream()
-                .filter(c -> c.getPosition().getLayer().equals(position.getLayer()))
-                .collect(Collectors.toSet());
+        Set<Coordinate> cats;
+        if (position.isOnSurface()) {
+            cats = game.getCats().stream()
+                    .filter(c -> c.getPosition().getLayer().equals(position.getLayer()))
+                    .map(m -> m.getPosition().getCoordinate())
+                    .collect(Collectors.toSet());
+        } else {
+            Subway currentSubway = (Subway) this.position.getLayer();
+            cats = currentSubway.getCatsLastSeen();
+        }
 
         var subways = game.getBoard().getSubways();
         var goalSubway = game.getGoalSubway();

@@ -20,6 +20,10 @@ public class Position {
         return layer;
     }
 
+    public boolean isOnSurface() {
+        return layer instanceof Surface;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
