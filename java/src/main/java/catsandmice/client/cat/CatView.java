@@ -22,19 +22,19 @@ public class CatView {
         this.entrances = entrances;
     }
 
-    public void setCurrentPosition(Position currentPosition) {
-        this.currentPosition = currentPosition;
+    public Position getCurrentPosition() {
+        return currentPosition;
     }
 
-    public void setMice(Set<Mouse> mice) {
-        this.mice = mice;
+    public Set<Mouse> getMice() {
+        return mice;
     }
 
     public Set<Mouse> getDeadMice() {
         return deadMice;
     }
 
-    public void setEntrances(Set<Coordinate> entrances) {
-        this.entrances = entrances;
+    public Set<Coordinate> getEntrances() {
+        return entrances;
     }
 }
