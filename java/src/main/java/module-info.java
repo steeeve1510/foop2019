@@ -1,4 +1,4 @@
 module catsandmice {
     requires javafx.controls;
-    exports catsandmice.client.cat;
+    exports catsandmice.client;
 }

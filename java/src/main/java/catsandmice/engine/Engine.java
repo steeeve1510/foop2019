@@ -94,7 +94,7 @@ public class Engine {
      * @return either 'Cats' or 'Mice' if the game is over, otherwise null
      */
     private String getWinner(Game game) {
-        if (game.getFrameCounter() < 20) {
+        if (game.getFrameCounter() < 200) {
             return null;
         }
         return "Draw";

@@ -30,7 +30,7 @@ class Initializer {
 
         var board = new Board(config.getHeight(), config.getWidth(), surface, subways);
 
-        var catClient = new CatUserClient();
+        var catClient = new CatUserClient(config);
         var cat = getCat(catClient, surface);
 
         Set<Cat> cats = new HashSet<>();

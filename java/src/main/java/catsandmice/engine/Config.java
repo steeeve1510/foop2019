@@ -10,15 +10,26 @@ public class Config {
     private int width = 10;
     private int numberOfSubways = 2;
 
-    int getHeight() {
+    private int windowWidth = 800;
+    private int windowHeight = 600;
+
+    public int getHeight() {
         return height;
     }
 
-    int getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    int getNumberOfSubways() {
+    public int getNumberOfSubways() {
         return numberOfSubways;
+    }
+
+    public int getWindowWidth() {
+        return windowWidth;
+    }
+
+    public int getWindowHeight() {
+        return windowHeight;
     }
 }

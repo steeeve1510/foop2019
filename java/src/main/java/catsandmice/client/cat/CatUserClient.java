@@ -1,33 +1,34 @@
 package catsandmice.client.cat;
 
-import catsandmice.command.Command;
-import catsandmice.command.MoveUpCommand;
+import catsandmice.client.JavaFXUI;
+import catsandmice.command.*;
+import catsandmice.engine.Config;
 import catsandmice.model.Cat;
-import javafx.application.Application;
-import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+
+import static catsandmice.client.JavaFXUI.forEveryField;
 
 /**
  * The GUI implementation of a cat
  */
-public class CatUserClient extends Application implements CatClient, Runnable {
+public class CatUserClient implements CatClient {
+
+    private Config config;
 
     private Cat cat;
     private boolean launched = false;
+    private Command nextCommand;
 
-    public CatUserClient() {
-    }
+    private JavaFXUI.ElementHolder elements = new JavaFXUI.ElementHolder();
 
-    @Override
-    public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 800, 600);
-        stage.setScene(scene);
-        stage.show();
+    public CatUserClient(Config config) {
+        this.config = config;
+        elements.config = config;
     }
 
     @Override
@@ -37,26 +38,83 @@ public class CatUserClient extends Application implements CatClient, Runnable {
 
     @Override
     public void render(CatView view) {
+        nextCommand = null;
         if (!launched) {
-            Thread thread = new Thread(this);
+            elements.keyEvent = (keyEvent) -> {
+                switch (keyEvent.getCode()) {
+                    case UP:
+                        nextCommand = new MoveUpCommand(cat);
+                        break;
+                    case RIGHT:
+                        nextCommand = new MoveRightCommand(cat);
+                        break;
+                    case DOWN:
+                        nextCommand = new MoveDownCommand(cat);
+                        break;
+                    case LEFT:
+                        nextCommand = new MoveLeftCommand(cat);
+                        break;
+                }
+            };
+            elements.pane = new FlowPane();
+            var ui = new JavaFXUI(elements);
+            var thread = new Thread(ui);
             thread.start();
             launched = true;
         }
-        System.out.println(view.getCurrentPosition().getCoordinate());
+
+        forEveryField((coordinate -> {
+            final var fieldConfig = new FieldConfig();
+            if (view.getCurrentPosition().getCoordinate().equals(coordinate)) {
+                fieldConfig.text = "C";
+                fieldConfig.color = "red";
+            } else if (view.getCats().contains(coordinate)) {
+                fieldConfig.text = "C";
+            } else if (view.getMice().contains(coordinate)) {
+                fieldConfig.text = "M";
+            } else if (view.getDeadMice().contains(coordinate)) {
+                fieldConfig.text = "M";
+                fieldConfig.color = "gray";
+            } else if (view.getEntrances().contains(coordinate)) {
+                fieldConfig.text = "O";
+                fieldConfig.color = "gray";
+            }
+            return getField(fieldConfig);
+        }));
     }
 
     @Override
     public Command getNextMove() {
-        return new MoveUpCommand(cat);
+        return nextCommand;
     }
 
     @Override
     public void gameOver(String winner) {
-        System.out.println("GAME OVER!\nThe winner is: " + winner);
+        JavaFXUI.gameOver(winner);
     }
 
-    @Override
-    public void run() {
-        launch();
+    private Pane getField(FieldConfig fieldConfig) {
+        int canvasWidth = elements.config.getWindowWidth() / elements.config.getWidth() - 1;
+        int canvasHeight = elements.config.getWindowHeight() / elements.config.getHeight() - 1;
+
+        Canvas canvas = new Canvas(canvasWidth, canvasHeight);
+        Label label = new Label(fieldConfig.text);
+        label.setTextFill(Color.web(fieldConfig.color));
+
+        StackPane holder = new StackPane();
+        holder.getChildren().add(canvas);
+        holder.getChildren().add(label);
+        holder.setStyle(
+                "-fx-background-color: white; " +
+                        "-fx-border-width: 0 1px 1px 0; " +
+                        "-fx-border-color: " + fieldConfig.backgroundColor + ";"
+        );
+        return holder;
+    }
+
+    private class FieldConfig {
+        String text = "";
+        String color = "black";
+        String backgroundColor = "lightgray";
     }
 }
