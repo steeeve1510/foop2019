@@ -61,7 +61,7 @@ public class Engine {
             game.increaseFrameCounter();
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 throw new RuntimeException("How could this happen?", e);
             }
@@ -94,7 +94,7 @@ public class Engine {
      * @return either 'Cats' or 'Mice' if the game is over, otherwise null
      */
     private String getWinner(Game game) {
-        if (game.getFrameCounter() < 200) {
+        if (game.getFrameCounter() < 100) {
             return null;
         }
         return "Draw";
