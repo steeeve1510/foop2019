@@ -42,8 +42,8 @@ class Initializer {
         var catBot = getCat(catBotClient, surface);
 
         Set<Cat> cats = new HashSet<>();
-//        cats.add(cat);
-        cats.add(catBot);
+        cats.add(cat);
+//        cats.add(catBot);
 
         var mouseClient = new MouseUserClient(config);
         var mouse = getMouse(mouseClient, subways);
@@ -52,8 +52,8 @@ class Initializer {
         var mouseBot = getMouse(mouseBotClient, subways);
 
         Set<Mouse> mice = new HashSet<>();
-        mice.add(mouse);
-//        mice.add(mouseBot);
+//        mice.add(mouse);
+        mice.add(mouseBot);
 
         return new Game(board, subways.iterator().next(), mice, cats);
     }
