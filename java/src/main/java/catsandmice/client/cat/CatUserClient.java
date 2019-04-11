@@ -49,11 +49,11 @@ public class CatUserClient implements CatClient {
                 fieldConfig.color = "red";
             } else if (view.getCats().contains(coordinate)) {
                 fieldConfig.text = "C";
+            } else if (view.getDeadMice().contains(coordinate)) {
+                fieldConfig.text = "m";
+                fieldConfig.color = "gray";
             } else if (view.getMice().contains(coordinate)) {
                 fieldConfig.text = "M";
-            } else if (view.getDeadMice().contains(coordinate)) {
-                fieldConfig.text = "M";
-                fieldConfig.color = "gray";
             } else if (view.getEntrances().contains(coordinate)) {
                 fieldConfig.text = "O";
                 fieldConfig.color = "gray";
@@ -69,7 +69,7 @@ public class CatUserClient implements CatClient {
 
     @Override
     public void gameOver(String winner) {
-        JavaFXUI.gameOver(winner);
+        JavaFXUI.gameOver("The winner is:" + winner);
     }
 
     private EventHandler<KeyEvent> getKeyEventHandler() {

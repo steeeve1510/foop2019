@@ -39,6 +39,11 @@ public class MouseUserClient implements MouseClient {
 
     @Override
     public void render(MouseView view) {
+        if (view.isDead()) {
+            JavaFXUI.gameOver("You are dead");
+            return;
+        }
+
         currentView = view;
         if (!launched) {
             elements.pane = new FlowPane();
@@ -62,11 +67,11 @@ public class MouseUserClient implements MouseClient {
                 fieldConfig.color = "red";
             } else if (view.getCats().contains(coordinate)) {
                 fieldConfig.text = "C";
-            } else if (view.getMice().contains(coordinate)) {
-                fieldConfig.text = "M";
             } else if (view.getDeadMice().contains(coordinate)) {
                 fieldConfig.text = "m";
                 fieldConfig.color = "dimgray";
+            } else if (view.getMice().contains(coordinate)) {
+                fieldConfig.text = "M";
             } else if (view.getGoalSubway().getEntrances().contains(coordinate) && view.getCurrentPosition().isOnSurface()) {
                 fieldConfig.text = "O";
                 fieldConfig.color = "red";
@@ -88,7 +93,7 @@ public class MouseUserClient implements MouseClient {
 
     @Override
     public void gameOver(String winner) {
-        JavaFXUI.gameOver(winner);
+        JavaFXUI.gameOver("The winner is: " + winner);
     }
 
     private EventHandler<KeyEvent> getKeyEventHandler() {

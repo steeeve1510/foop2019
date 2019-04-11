@@ -63,11 +63,11 @@ public class JavaFXUI extends Application implements Runnable {
         }
     }
 
-    public static void gameOver(String winner) {
+    public static void gameOver(String message) {
         changeGui(() -> {
             elements.pane.getChildren().clear();
             Canvas canvas = new Canvas(elements.config.getWindowWidth(), elements.config.getWindowHeight());
-            Label label = new Label("GAME OVER!\nThe winner is: " + winner);
+            Label label = new Label("GAME OVER!\n" + message);
             Pane holder = new StackPane(canvas, label);
             holder.setStyle(
                     "-fx-background-color: white;"

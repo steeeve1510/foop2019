@@ -83,7 +83,7 @@ public class Mouse implements Player {
         }
         var goalSubway = game.getGoalSubway();
 
-        MouseView mouseView = new MouseView(position, aliveMiceOnCurrentLayer, deadMiceOnCurrentLayer, cats, subways, goalSubway);
+        MouseView mouseView = new MouseView(dead, position, aliveMiceOnCurrentLayer, deadMiceOnCurrentLayer, cats, subways, goalSubway);
         mouseClient.render(mouseView);
     }
 }
