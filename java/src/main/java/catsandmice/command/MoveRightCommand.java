@@ -11,6 +11,7 @@ import catsandmice.model.Position;
 public class MoveRightCommand implements Command {
 
     private Player player;
+    private boolean executed = false;
 
     public MoveRightCommand(Player player) {
         this.player = player;
@@ -18,6 +19,9 @@ public class MoveRightCommand implements Command {
 
     @Override
     public void execute(Game game) {
+        if (executed) {
+            return;
+        }
         var maxWidth = game.getBoard().getWidth();
 
         var currentCoordinate = player.getPosition().getCoordinate();
@@ -30,6 +34,7 @@ public class MoveRightCommand implements Command {
         var newCoordinate = new Coordinate(currentCoordinate.getX()+1, currentCoordinate.getY());
         var newPosition = new Position(newCoordinate, currentLayer);
         player.setPosition(newPosition);
+        executed = true;
     }
 
 }

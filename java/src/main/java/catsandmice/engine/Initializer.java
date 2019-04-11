@@ -2,6 +2,8 @@ package catsandmice.engine;
 
 import catsandmice.client.cat.CatClient;
 import catsandmice.client.cat.CatUserClient;
+import catsandmice.client.mouse.MouseClient;
+import catsandmice.client.mouse.MouseUserClient;
 import catsandmice.model.*;
 
 import java.util.*;
@@ -33,9 +35,14 @@ class Initializer {
         var catClient = new CatUserClient(config);
         var cat = getCat(catClient, surface);
 
+        var mouseClient = new MouseUserClient(config);
+        var mouse = getMouse(mouseClient, subways);
+
         Set<Cat> cats = new HashSet<>();
-        cats.add(cat);
+//        cats.add(cat);
+
         Set<Mouse> mice = new HashSet<>();
+        mice.add(mouse);
 
         return new Game(board, subways.iterator().next(), mice, cats);
     }
@@ -78,5 +85,14 @@ class Initializer {
 
         var position = new Position(coordinate, surface);
         return new Cat(catClient, position);
+    }
+
+    private Mouse getMouse(MouseClient mouseClient, Set<Subway> subways) {
+        var coordinate = getRandomCoordinate(config.getHeight(), config.getWidth());
+
+        int randomSubwayIndex = (int) (subways.size() * Math.random());
+        Subway randomSubway = subways.toArray(new Subway[]{})[randomSubwayIndex];
+        var position = new Position(coordinate, randomSubway);
+        return new Mouse(mouseClient, position);
     }
 }

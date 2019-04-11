@@ -9,15 +9,15 @@ import java.util.Set;
  */
 public class MouseView {
 
-    private Position position;
+    private Position currentPosition;
     private Set<Coordinate> mice;
     private Set<Coordinate> deadMice;
     private Set<Coordinate> cats;
     private Set<Subway> subways;
     private Subway goalSubway;
 
-    public MouseView(Position position, Set<Coordinate> mice, Set<Coordinate> deadMice, Set<Coordinate> cats, Set<Subway> subways, Subway goalSubway) {
-        this.position = position;
+    public MouseView(Position currentPosition, Set<Coordinate> mice, Set<Coordinate> deadMice, Set<Coordinate> cats, Set<Subway> subways, Subway goalSubway) {
+        this.currentPosition = currentPosition;
         this.mice = mice;
         this.deadMice = deadMice;
         this.cats = cats;
@@ -25,8 +25,8 @@ public class MouseView {
         this.goalSubway = goalSubway;
     }
 
-    public Position getPosition() {
-        return position;
+    public Position getCurrentPosition() {
+        return currentPosition;
     }
 
     public Set<Coordinate> getMice() {

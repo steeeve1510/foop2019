@@ -14,6 +14,7 @@ public class ToggleLayerCommand implements Command {
 
     private Mouse mouse;
     private Set<Coordinate> catsLastSeen;
+    private boolean executed = false;
 
     public ToggleLayerCommand(Mouse mouse, Set<Coordinate> catsLastSeen) {
         this.mouse = mouse;
@@ -22,6 +23,9 @@ public class ToggleLayerCommand implements Command {
 
     @Override
     public void execute(Game game) {
+        if (executed) {
+            return;
+        }
         var currentCoordinate = mouse.getPosition().getCoordinate();
         var currentLayer = mouse.getPosition().getLayer();
 
@@ -40,6 +44,7 @@ public class ToggleLayerCommand implements Command {
         }
         var newPosition = new Position(currentCoordinate, newLayer);
         mouse.setPosition(newPosition);
+        executed = true;
     }
 
     private Subway findSubwayWithEntrance(Coordinate entrance, Set<Subway> subways) {

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -79,5 +80,31 @@ public class JavaFXUI extends Application implements Runnable {
         public Pane pane;
         public EventHandler<KeyEvent> keyEvent;
         public Config config;
+    }
+
+
+    public static Pane getField(FieldConfig fieldConfig) {
+        int canvasWidth = elements.config.getWindowWidth() / elements.config.getWidth() - 1;
+        int canvasHeight = elements.config.getWindowHeight() / elements.config.getHeight() - 1;
+
+        Canvas canvas = new Canvas(canvasWidth, canvasHeight);
+        Label label = new Label(fieldConfig.text);
+        label.setTextFill(Color.web(fieldConfig.color));
+
+        StackPane holder = new StackPane();
+        holder.getChildren().add(canvas);
+        holder.getChildren().add(label);
+        holder.setStyle(
+                "-fx-background-color: " + fieldConfig.backgroundColor + "; " +
+                        "-fx-border-width: 0 1px 1px 0; " +
+                        "-fx-border-color: gray;"
+        );
+        return holder;
+    }
+
+    public static class FieldConfig {
+        public String text = "";
+        public String color = "black";
+        public String backgroundColor = "gray";
     }
 }
