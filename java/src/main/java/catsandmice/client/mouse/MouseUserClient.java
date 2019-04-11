@@ -4,14 +4,10 @@ import catsandmice.client.JavaFXUI;
 import catsandmice.command.Command;
 import catsandmice.command.mouse.*;
 import catsandmice.engine.Config;
-import catsandmice.model.Coordinate;
 import catsandmice.model.Mouse;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static catsandmice.client.JavaFXUI.forEveryField;
 import static catsandmice.client.JavaFXUI.getField;

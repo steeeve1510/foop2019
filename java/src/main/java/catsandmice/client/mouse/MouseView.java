@@ -1,8 +1,9 @@
 package catsandmice.client.mouse;
 
-import catsandmice.model.*;
+import catsandmice.model.Coordinate;
+import catsandmice.model.Position;
+import catsandmice.model.Subway;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 

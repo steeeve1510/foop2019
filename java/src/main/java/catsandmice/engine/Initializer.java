@@ -8,7 +8,8 @@ import catsandmice.client.mouse.MouseClient;
 import catsandmice.client.mouse.MouseUserClient;
 import catsandmice.model.*;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 class Initializer {
@@ -27,7 +28,7 @@ class Initializer {
     Game initializeGame() {
         var surface = new Surface();
         var subways = new HashSet<Subway>();
-        for(var i = 0; i < config.getNumberOfSubways(); i++) {
+        for (var i = 0; i < config.getNumberOfSubways(); i++) {
             var subway = createSubway(subways);
             subways.add(subway);
         }

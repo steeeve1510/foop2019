@@ -29,7 +29,7 @@ public class MoveDownCommand implements Command {
             return;
         }
 
-        var newCoordinate = new Coordinate(currentCoordinate.getX(), currentCoordinate.getY()-1);
+        var newCoordinate = new Coordinate(currentCoordinate.getX(), currentCoordinate.getY() - 1);
         var newPosition = new Position(newCoordinate, currentLayer);
         player.setPosition(newPosition);
         executed = true;

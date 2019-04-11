@@ -31,7 +31,7 @@ public class MoveRightCommand implements Command {
             return;
         }
 
-        var newCoordinate = new Coordinate(currentCoordinate.getX()+1, currentCoordinate.getY());
+        var newCoordinate = new Coordinate(currentCoordinate.getX() + 1, currentCoordinate.getY());
         var newPosition = new Position(newCoordinate, currentLayer);
         player.setPosition(newPosition);
         executed = true;
