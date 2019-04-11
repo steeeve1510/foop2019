@@ -16,13 +16,20 @@ public class ToggleLayerCommand implements Command {
     private Set<Coordinate> catsLastSeen;
     private boolean executed = false;
 
-    public ToggleLayerCommand(Mouse mouse, Set<Coordinate> catsLastSeen) {
+    public ToggleLayerCommand(Mouse mouse) {
         this.mouse = mouse;
+
+    }
+
+    public void initialize(Set<Coordinate> catsLastSeen) {
         this.catsLastSeen = catsLastSeen;
     }
 
     @Override
     public void execute(Game game) {
+        if (catsLastSeen == null) {
+            throw new RuntimeException("ToggleLayerCommand not initialized");
+        }
         if (executed) {
             return;
         }

@@ -6,7 +6,6 @@ import catsandmice.command.mouse.*;
 import catsandmice.engine.Config;
 import catsandmice.model.Coordinate;
 import catsandmice.model.Mouse;
-import catsandmice.model.Subway;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
@@ -23,6 +22,7 @@ import static catsandmice.client.JavaFXUI.getField;
 public class MouseUserClient implements MouseClient {
 
     private Mouse mouse;
+    private MouseView currentView;
     private boolean launched = false;
     private Command nextCommand;
 
@@ -39,21 +39,22 @@ public class MouseUserClient implements MouseClient {
 
     @Override
     public void render(MouseView view) {
+        currentView = view;
         if (!launched) {
             elements.pane = new FlowPane();
+            elements.keyEvent = this.getKeyEventHandler();
             var ui = new JavaFXUI(elements);
             var thread = new Thread(ui);
             thread.start();
             launched = true;
         }
-        elements.keyEvent = this.getKeyEventHandler(view);
 
         Set<Coordinate> entrances = view.getSubways().stream()
                 .flatMap(s -> s.getEntrances().stream())
                 .collect(Collectors.toSet());
         forEveryField((coordinate -> {
             final var fieldConfig = new JavaFXUI.FieldConfig();
-            if (view.getCurrentPosition().getLayer() instanceof Subway) {
+            if (!view.getCurrentPosition().isOnSurface()) {
                 fieldConfig.backgroundColor = "silver";
             }
             if (view.getCurrentPosition().getCoordinate().equals(coordinate)) {
@@ -66,6 +67,9 @@ public class MouseUserClient implements MouseClient {
             } else if (view.getDeadMice().contains(coordinate)) {
                 fieldConfig.text = "m";
                 fieldConfig.color = "dimgray";
+            } else if (view.getGoalSubway().getEntrances().contains(coordinate) && view.getCurrentPosition().isOnSurface()) {
+                fieldConfig.text = "O";
+                fieldConfig.color = "red";
             } else if (entrances.contains(coordinate)) {
                 fieldConfig.text = "O";
                 fieldConfig.color = "dimgray";
@@ -76,6 +80,9 @@ public class MouseUserClient implements MouseClient {
 
     @Override
     public Command getNextMove() {
+        if (nextCommand instanceof ToggleLayerCommand) {
+            ((ToggleLayerCommand) nextCommand).initialize(currentView.getCats());
+        }
         return nextCommand;
     }
 
@@ -84,7 +91,7 @@ public class MouseUserClient implements MouseClient {
         JavaFXUI.gameOver(winner);
     }
 
-    private EventHandler<KeyEvent> getKeyEventHandler(MouseView mouseView) {
+    private EventHandler<KeyEvent> getKeyEventHandler() {
         return (keyEvent) -> {
             switch (keyEvent.getCode()) {
                 case UP:
@@ -100,7 +107,7 @@ public class MouseUserClient implements MouseClient {
                     nextCommand = new MouseMoveLeftCommand(mouse);
                     break;
                 case SPACE:
-                    nextCommand = new ToggleLayerCommand(mouse, mouseView.getCats());
+                    nextCommand = new ToggleLayerCommand(mouse);
             }
         };
     }

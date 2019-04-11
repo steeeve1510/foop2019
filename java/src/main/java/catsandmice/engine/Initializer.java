@@ -1,5 +1,6 @@
 package catsandmice.engine;
 
+import catsandmice.client.cat.CatBotClient;
 import catsandmice.client.cat.CatClient;
 import catsandmice.client.cat.CatUserClient;
 import catsandmice.client.mouse.MouseClient;
@@ -35,11 +36,16 @@ class Initializer {
         var catClient = new CatUserClient(config);
         var cat = getCat(catClient, surface);
 
-        var mouseClient = new MouseUserClient(config);
-        var mouse = getMouse(mouseClient, subways);
+        var catBotClient = new CatBotClient();
+        var catBot = getCat(catBotClient, surface);
 
         Set<Cat> cats = new HashSet<>();
 //        cats.add(cat);
+        cats.add(catBot);
+
+        var mouseClient = new MouseUserClient(config);
+        var mouse = getMouse(mouseClient, subways);
+
 
         Set<Mouse> mice = new HashSet<>();
         mice.add(mouse);

@@ -4,6 +4,7 @@ import catsandmice.client.mouse.MouseClient;
 import catsandmice.client.mouse.MouseView;
 import catsandmice.command.Command;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,7 +74,13 @@ public class Mouse implements Player {
             cats = currentSubway.getCatsLastSeen();
         }
 
-        var subways = game.getBoard().getSubways();
+        Set<Subway> subways;
+        if (position.isOnSurface()) {
+            subways = game.getBoard().getSubways();
+        } else {
+            subways = new HashSet<>();
+            subways.add((Subway) position.getLayer());
+        }
         var goalSubway = game.getGoalSubway();
 
         MouseView mouseView = new MouseView(position, aliveMiceOnCurrentLayer, deadMiceOnCurrentLayer, cats, subways, goalSubway);
