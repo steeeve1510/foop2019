@@ -8,7 +8,7 @@ public class Config {
 
     private int height = 10;
     private int width = 10;
-    private int numberOfSubways = 2;
+    private int numberOfSubways = 4;
 
     private int windowWidth = 800;
     private int windowHeight = 600;
