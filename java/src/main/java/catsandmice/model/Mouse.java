@@ -4,7 +4,8 @@ import catsandmice.client.mouse.MouseClient;
 import catsandmice.client.mouse.MouseView;
 import catsandmice.command.Command;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -74,12 +75,14 @@ public class Mouse implements Player {
             cats = currentSubway.getCatsLastSeen();
         }
 
-        Set<Subway> subways;
+        Map<Integer, Set<Coordinate>> subways;
         if (position.isOnSurface()) {
-            subways = game.getBoard().getSubways();
+            subways = game.getBoard().getSubways().stream()
+                    .collect(Collectors.toMap(Subway::getId, Subway::getEntrances));
         } else {
-            subways = new HashSet<>();
-            subways.add((Subway) position.getLayer());
+            subways = new HashMap<>();
+            var subway = (Subway) position.getLayer();
+            subways.put(subway.getId(), subway.getEntrances());
         }
         var goalSubway = game.getGoalSubway();
 

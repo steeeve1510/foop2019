@@ -6,11 +6,19 @@ import java.util.Set;
 
 public class Subway implements Layer {
 
+    private static int counter = 0;
+
+    private int id = 0;
     private Set<Coordinate> entrances;
     private Set<Coordinate> catsLastSeen = new HashSet<>();
 
     public Subway(Set<Coordinate> entrances) {
+        this.id = ++counter;
         this.entrances = entrances;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Set<Coordinate> getEntrances() {

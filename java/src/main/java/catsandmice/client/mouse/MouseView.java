@@ -2,6 +2,8 @@ package catsandmice.client.mouse;
 
 import catsandmice.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,10 +16,10 @@ public class MouseView {
     private Set<Coordinate> mice;
     private Set<Coordinate> deadMice;
     private Set<Coordinate> cats;
-    private Set<Subway> subways;
+    private Map<Integer, Set<Coordinate>> subways;
     private Subway goalSubway;
 
-    public MouseView(boolean isDead, Position currentPosition, Set<Coordinate> mice, Set<Coordinate> deadMice, Set<Coordinate> cats, Set<Subway> subways, Subway goalSubway) {
+    public MouseView(boolean isDead, Position currentPosition, Set<Coordinate> mice, Set<Coordinate> deadMice, Set<Coordinate> cats, Map<Integer, Set<Coordinate>> subways, Subway goalSubway) {
         this.isDead = isDead;
         this.currentPosition = currentPosition;
         this.mice = mice;
@@ -47,7 +49,7 @@ public class MouseView {
         return cats;
     }
 
-    public Set<Subway> getSubways() {
+    public Map<Integer, Set<Coordinate>> getSubways() {
         return subways;
     }
 

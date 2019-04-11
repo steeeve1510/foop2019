@@ -54,9 +54,6 @@ public class MouseUserClient implements MouseClient {
             launched = true;
         }
 
-        Set<Coordinate> entrances = view.getSubways().stream()
-                .flatMap(s -> s.getEntrances().stream())
-                .collect(Collectors.toSet());
         forEveryField((coordinate -> {
             final var fieldConfig = new JavaFXUI.FieldConfig();
             if (!view.getCurrentPosition().isOnSurface()) {
@@ -73,11 +70,18 @@ public class MouseUserClient implements MouseClient {
             } else if (view.getMice().contains(coordinate)) {
                 fieldConfig.text = "M";
             } else if (view.getGoalSubway().getEntrances().contains(coordinate) && view.getCurrentPosition().isOnSurface()) {
-                fieldConfig.text = "O";
+                fieldConfig.text = "O" + view.getGoalSubway().getId();
                 fieldConfig.color = "red";
-            } else if (entrances.contains(coordinate)) {
-                fieldConfig.text = "O";
-                fieldConfig.color = "dimgray";
+            } else {
+                var subways = view.getSubways();
+                Integer subwayId = subways.keySet().stream()
+                        .filter(id -> subways.get(id).contains(coordinate))
+                        .findFirst()
+                        .orElse(null);
+                if (subwayId != null) {
+                    fieldConfig.text = "O" + subwayId;
+                    fieldConfig.color = "dimgray";
+                }
             }
             return getField(fieldConfig);
         }));
