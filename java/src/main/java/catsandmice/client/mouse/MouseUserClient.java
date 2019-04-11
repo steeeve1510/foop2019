@@ -54,7 +54,7 @@ public class MouseUserClient implements MouseClient {
         forEveryField((coordinate -> {
             final var fieldConfig = new JavaFXUI.FieldConfig();
             if (view.getCurrentPosition().getLayer() instanceof Subway) {
-                fieldConfig.backgroundColor = "yellow";
+                fieldConfig.backgroundColor = "silver";
             }
             if (view.getCurrentPosition().getCoordinate().equals(coordinate)) {
                 fieldConfig.text = "M";

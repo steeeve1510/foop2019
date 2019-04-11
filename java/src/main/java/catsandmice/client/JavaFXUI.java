@@ -105,6 +105,6 @@ public class JavaFXUI extends Application implements Runnable {
     public static class FieldConfig {
         public String text = "";
         public String color = "black";
-        public String backgroundColor = "gray";
+        public String backgroundColor = "white";
     }
 }
