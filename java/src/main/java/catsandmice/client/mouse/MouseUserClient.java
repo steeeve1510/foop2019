@@ -93,7 +93,7 @@ public class MouseUserClient implements MouseClient {
 
     @Override
     public void gameOver(String winner) {
-        JavaFXUI.gameOver("The winner is: " + winner);
+        JavaFXUI.gameOver("The winners are: " + winner);
     }
 
     private EventHandler<KeyEvent> getKeyEventHandler() {

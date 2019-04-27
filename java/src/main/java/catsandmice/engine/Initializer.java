@@ -32,6 +32,12 @@ class Initializer {
             var subway = createSubway(subways);
             subways.add(subway);
         }
+        var goalSubway = subways.stream()
+                .findFirst()
+                .orElse(null);
+        var subwaysWithoutGoal = subways.stream()
+                .filter(s -> s != goalSubway)
+                .collect(Collectors.toSet());
 
         var board = new Board(config.getHeight(), config.getWidth(), surface, subways);
 
@@ -46,16 +52,16 @@ class Initializer {
 //        cats.add(catBot);
 
         var mouseClient = new MouseUserClient(config);
-        var mouse = getMouse(mouseClient, subways);
+        var mouse = getMouse(mouseClient, subwaysWithoutGoal);
 
         var mouseBotClient = new MouseBotClient();
-        var mouseBot = getMouse(mouseBotClient, subways);
+        var mouseBot = getMouse(mouseBotClient, subwaysWithoutGoal);
 
         Set<Mouse> mice = new HashSet<>();
 //        mice.add(mouse);
         mice.add(mouseBot);
 
-        return new Game(board, subways.iterator().next(), mice, cats);
+        return new Game(board, goalSubway, mice, cats);
     }
 
     private Subway createSubway(Set<Subway> subways) {

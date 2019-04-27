@@ -61,7 +61,7 @@ public class Engine {
             game.increaseFrameCounter();
 
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException("How could this happen?", e);
             }
@@ -94,9 +94,36 @@ public class Engine {
      * @return either 'Cats' or 'Mice' if the game is over, otherwise null
      */
     private String getWinner(Game game) {
-        if (game.getFrameCounter() < 100) {
-            return null;
+        if (miceHaveWon(game)) {
+            return "Mice";
         }
-        return "Draw";
+        if (catsHaveWon(game)) {
+            return "Cats";
+        }
+        if (game.getFrameCounter() > 100) {
+            return "Draw";
+        }
+        return null;
+    }
+
+    private boolean miceHaveWon(Game game) {
+        var numberOfMice = game.getMice().size();
+
+        var goalSubway = game.getGoalSubway();
+        var numberOfMiceInGoalSubway = (int) game.getMice().stream()
+                .filter(m -> goalSubway.equals(m.getPosition().getLayer()))
+                .count();
+
+        return numberOfMiceInGoalSubway >= numberOfMice / 2;
+    }
+
+    private boolean catsHaveWon(Game game) {
+        var numberOfMice = game.getMice().size();
+
+        var numberOfDeadMice = game.getMice().stream()
+                .filter(Mouse::isDead)
+                .count();
+
+        return numberOfDeadMice > numberOfMice / 2;
     }
 }
