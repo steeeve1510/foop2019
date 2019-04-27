@@ -114,6 +114,9 @@ public class Engine {
                 .filter(m -> goalSubway.equals(m.getPosition().getLayer()))
                 .count();
 
+        if (numberOfMice == 1) {
+            return numberOfMiceInGoalSubway >= 1;
+        }
         return numberOfMiceInGoalSubway >= numberOfMice / 2;
     }
 

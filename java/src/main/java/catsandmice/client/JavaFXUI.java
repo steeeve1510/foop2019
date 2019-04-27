@@ -44,15 +44,15 @@ public class JavaFXUI extends Application implements Runnable {
         int width = elements.config.getWidth();
         int height = elements.config.getHeight();
 
-        for (int y = height - 1; y >= 0; y--) {
-            for (int x = 0; x < width; x++) {
-                Coordinate coordinate = new Coordinate(x, y);
-                Pane pane = supplier.apply(coordinate);
-                changeGui(() -> {
+        changeGui(() -> {
+            for (int y = height - 1; y >= 0; y--) {
+                for (int x = 0; x < width; x++) {
+                    Coordinate coordinate = new Coordinate(x, y);
+                    Pane pane = supplier.apply(coordinate);
                     elements.pane.getChildren().add(pane);
-                });
+                }
             }
-        }
+        });
     }
 
     public static void changeGui(Runnable runnable) {
