@@ -2,8 +2,10 @@ package catsandmice.engine;
 
 import catsandmice.client.cat.CatBotClient;
 import catsandmice.client.cat.CatClient;
+import catsandmice.client.cat.CatUserClient;
 import catsandmice.client.mouse.MouseBotClient;
 import catsandmice.client.mouse.MouseClient;
+import catsandmice.client.mouse.MouseUserClient;
 import catsandmice.model.*;
 
 import java.util.HashSet;
@@ -53,13 +55,16 @@ public class Initializer {
             mice.add(mouseBot);
         }
 
-//        var mouseClient = new MouseUserClient(config);
-//        var mouse = getMouse(mouseClient, subwaysWithoutGoal);
-//        mice.add(mouse);
-
-//        var catClient = new CatUserClient(config);
-//        var cat = getCat(catClient, surface);
-//        cats.add(cat);
+        var random = Math.random();
+        if (random < 0.5) {
+            var mouseClient = new MouseUserClient(config);
+            var mouse = getMouse(mouseClient, subwaysWithoutGoal);
+            mice.add(mouse);
+        } else {
+            var catClient = new CatUserClient(config);
+            var cat = getCat(catClient, surface);
+            cats.add(cat);
+        }
 
         return new Game(board, goalSubway, mice, cats);
     }
