@@ -1,8 +1,9 @@
 package catsandmice.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class Game {
+public class Game implements Serializable {
 
     private long frameCounter = 0;
 

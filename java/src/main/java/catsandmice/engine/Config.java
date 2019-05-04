@@ -13,6 +13,11 @@ public class Config {
     private int windowWidth = 800;
     private int windowHeight = 600;
 
+    private int numberOfMiceBots = 10;
+    private int numberOfCatBots = 1;
+
+    private int port = 6666;
+
     public int getHeight() {
         return height;
     }
@@ -31,5 +36,17 @@ public class Config {
 
     public int getWindowHeight() {
         return windowHeight;
+    }
+
+    public int getNumberOfMiceBots() {
+        return numberOfMiceBots;
+    }
+
+    public int getNumberOfCatBots() {
+        return numberOfCatBots;
+    }
+
+    public int getPort() {
+        return port;
     }
 }

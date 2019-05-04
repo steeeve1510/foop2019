@@ -4,8 +4,11 @@ import catsandmice.model.Cat;
 import catsandmice.model.Game;
 import catsandmice.model.Mouse;
 import catsandmice.model.Player;
+import catsandmice.network.IncomingPlayerService;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,13 +23,15 @@ public class Engine {
     public void run() {
         // initialize
         var initializer = new Initializer(config);
-        Game game = initializer.initializeGame();
+        var game = initializer.initializeGame();
 
+        var incomingPlayerService = new IncomingPlayerService(config, game);
+        incomingPlayerService.start();
         do {
             // get players
             var mice = game.getMice();
             var cats = game.getCats();
-            var players = Stream.concat(mice.stream(), cats.stream()).collect(Collectors.toList());
+            List<Player> players = Stream.concat(mice.stream(), cats.stream()).collect(Collectors.toList());
 
             // get next moves
             var commands = players.stream()
@@ -40,7 +45,7 @@ public class Engine {
                 command.execute(game);
             }
 
-            // check if any mouse is dead;
+            // check if any mice are dead;
             killMice(game);
 
             // check if game is over
@@ -48,10 +53,22 @@ public class Engine {
 
             if (winner != null) {
                 players.forEach(p -> p.gameOver(winner));
+                incomingPlayerService.stop();
                 break;
             }
 
             // check for incoming players
+            Set<Player> inComingPlayers = incomingPlayerService.getNewPlayers();
+            inComingPlayers.forEach(p -> {
+                players.add(p);
+                if (p instanceof Mouse) {
+                    var mouse = (Mouse) p;
+                    game.getMice().add(mouse);
+                } else if (p instanceof Cat) {
+                    var cat = (Cat) p;
+                    game.getCats().add(cat);
+                }
+            });
 
             // notify all client the update
             for (var player : players) {

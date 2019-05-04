@@ -4,12 +4,13 @@ import catsandmice.client.mouse.MouseClient;
 import catsandmice.client.mouse.MouseView;
 import catsandmice.command.Command;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Mouse implements Player {
+public class Mouse implements Player, Serializable {
 
     private MouseClient mouseClient;
     private Position position;

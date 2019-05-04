@@ -1,8 +1,9 @@
 package catsandmice.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Position {
+public class Position implements Serializable {
 
     private Coordinate coordinate;
     private Layer layer;

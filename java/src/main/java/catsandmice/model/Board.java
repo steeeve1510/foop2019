@@ -1,9 +1,10 @@
 package catsandmice.model;
 
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class Board {
+public class Board implements Serializable {
 
     private int width;
     private int height;

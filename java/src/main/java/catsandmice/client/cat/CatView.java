@@ -3,12 +3,13 @@ package catsandmice.client.cat;
 import catsandmice.model.Coordinate;
 import catsandmice.model.Position;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * This class should contain all the information a cat can see at some point during the game
  */
-public class CatView {
+public class CatView implements Serializable {
     private Position currentPosition;
     private Set<Coordinate> cats;
     private Set<Coordinate> mice;

@@ -4,13 +4,14 @@ import catsandmice.model.Coordinate;
 import catsandmice.model.Position;
 import catsandmice.model.Subway;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * This class should contain all the information a mouse can see at some point during the game
  */
-public class MouseView {
+public class MouseView implements Serializable {
 
     private boolean isDead;
     private Position currentPosition;

@@ -4,9 +4,10 @@ import catsandmice.client.cat.CatClient;
 import catsandmice.client.cat.CatView;
 import catsandmice.command.Command;
 
+import java.io.Serializable;
 import java.util.stream.Collectors;
 
-public class Cat implements Player {
+public class Cat implements Player, Serializable {
 
     private CatClient catClient;
     private Position position;

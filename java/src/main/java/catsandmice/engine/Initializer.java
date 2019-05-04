@@ -5,7 +5,6 @@ import catsandmice.client.cat.CatClient;
 import catsandmice.client.cat.CatUserClient;
 import catsandmice.client.mouse.MouseBotClient;
 import catsandmice.client.mouse.MouseClient;
-import catsandmice.client.mouse.MouseUserClient;
 import catsandmice.model.*;
 
 import java.util.HashSet;
@@ -41,25 +40,27 @@ class Initializer {
 
         var board = new Board(config.getHeight(), config.getWidth(), surface, subways);
 
-        var catClient = new CatUserClient(config);
-        var cat = getCat(catClient, surface);
-
-        var catBotClient = new CatBotClient();
-        var catBot = getCat(catBotClient, surface);
-
         Set<Cat> cats = new HashSet<>();
-        cats.add(cat);
-//        cats.add(catBot);
-
-        var mouseClient = new MouseUserClient(config);
-        var mouse = getMouse(mouseClient, subwaysWithoutGoal);
-
-        var mouseBotClient = new MouseBotClient();
-        var mouseBot = getMouse(mouseBotClient, subwaysWithoutGoal);
+        for (var i = 0; i < config.getNumberOfCatBots(); i++) {
+            var catBotClient = new CatBotClient();
+            var catBot = getCat(catBotClient, surface);
+            cats.add(catBot);
+        }
 
         Set<Mouse> mice = new HashSet<>();
+        for (var i = 0; i < config.getNumberOfMiceBots(); i++) {
+            var mouseBotClient = new MouseBotClient();
+            var mouseBot = getMouse(mouseBotClient, subwaysWithoutGoal);
+            mice.add(mouseBot);
+        }
+
+//        var mouseClient = new MouseUserClient(config);
+//        var mouse = getMouse(mouseClient, subwaysWithoutGoal);
 //        mice.add(mouse);
-        mice.add(mouseBot);
+
+//        var catClient = new CatUserClient(config);
+//        var cat = getCat(catClient, surface);
+//        cats.add(cat);
 
         return new Game(board, goalSubway, mice, cats);
     }

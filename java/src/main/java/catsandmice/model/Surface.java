@@ -1,4 +1,6 @@
 package catsandmice.model;
 
-public class Surface implements Layer {
+import java.io.Serializable;
+
+public class Surface implements Layer, Serializable {
 }
