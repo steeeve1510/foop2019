@@ -1,40 +1,46 @@
-package catsandmice.client.cat;
+package catsandmice.client.mouse;
 
-import catsandmice.command.*;
-import catsandmice.model.Cat;
+import catsandmice.command.Command;
+import catsandmice.command.MoveDownCommand;
+import catsandmice.command.MoveRightCommand;
+import catsandmice.command.mouse.*;
+import catsandmice.model.Mouse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class CatNetworkServerClient implements CatClient {
+public class MouseNetworkServerClient implements MouseClient {
 
-    private Cat cat;
+    private Mouse mouse;
 
     private Socket socket;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
-    public CatNetworkServerClient(Socket socket) {
-        this.socket = socket;
+    private MouseView lastView;
+
+    public MouseNetworkServerClient(Socket socket) {
         try {
+            this.socket = socket;
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
 
-            outputStream.writeObject("CAT");
+            outputStream.writeObject("MOUSE");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void setCat(Cat cat) {
-        this.cat = cat;
+    public void setMouse(Mouse mouse) {
+        this.mouse = mouse;
     }
 
     @Override
-    public void render(CatView view) {
+    public void render(MouseView view) {
+        this.lastView = view;
         try {
             outputStream.writeObject(view);
         } catch (IOException ignored) {
@@ -50,17 +56,22 @@ public class CatNetworkServerClient implements CatClient {
         } catch (IOException | ClassNotFoundException ignored) {
         }
 
-        if (nextMove instanceof MoveUpCommand) {
-            return new MoveUpCommand(cat);
+        if (nextMove instanceof MouseMoveUpCommand) {
+            return new MouseMoveUpCommand(mouse);
         }
-        if (nextMove instanceof MoveRightCommand) {
-            return new MoveRightCommand(cat);
+        if (nextMove instanceof MouseMoveRightCommand) {
+            return new MoveRightCommand(mouse);
         }
-        if (nextMove instanceof MoveDownCommand) {
-            return new MoveDownCommand(cat);
+        if (nextMove instanceof MouseMoveDownCommand) {
+            return new MoveDownCommand(mouse);
         }
-        if (nextMove instanceof MoveLeftCommand) {
-            return new MoveLeftCommand(cat);
+        if (nextMove instanceof MouseMoveLeftCommand) {
+            return new MouseMoveLeftCommand(mouse);
+        }
+        if (nextMove instanceof ToggleLayerCommand) {
+            var toggle = new ToggleLayerCommand(mouse);
+            toggle.initialize(lastView.getCats());
+            return toggle;
         }
         return null;
     }

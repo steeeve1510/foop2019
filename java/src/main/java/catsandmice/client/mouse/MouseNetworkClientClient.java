@@ -1,24 +1,24 @@
-package catsandmice.client.cat;
+package catsandmice.client.mouse;
 
 import catsandmice.command.Command;
 import catsandmice.engine.Config;
-import catsandmice.model.Cat;
+import catsandmice.model.Mouse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class CatNetworkClientClient implements CatClient {
+public class MouseNetworkClientClient implements MouseClient {
 
     private Socket socket;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
-    private CatUserClient catUserClient;
+    private MouseUserClient mouseUserClient;
 
-    public CatNetworkClientClient(Socket socket, ObjectOutputStream outputStream, ObjectInputStream inputStream, Config config) {
-        catUserClient = new CatUserClient(config);
+    public MouseNetworkClientClient(Socket socket, ObjectOutputStream outputStream, ObjectInputStream inputStream, Config config) {
+        this.mouseUserClient = new MouseUserClient(config);
         this.socket = socket;
         this.outputStream = outputStream;
         this.inputStream = inputStream;
@@ -43,32 +43,31 @@ public class CatNetworkClientClient implements CatClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
-    public void setCat(Cat cat) {
-        catUserClient.setCat(cat);
+    public void setMouse(Mouse mouse) {
+        mouseUserClient.setMouse(mouse);
     }
 
     @Override
-    public void render(CatView view) {
-        catUserClient.render(view);
+    public void render(MouseView view) {
+        mouseUserClient.render(view);
     }
 
     @Override
     public Command getNextMove() {
-        return catUserClient.getNextMove();
+        return mouseUserClient.getNextMove();
     }
 
     @Override
     public void gameOver(String winner) {
-        catUserClient.gameOver(winner);
+        mouseUserClient.gameOver(winner);
     }
 
     private boolean handleRequest(Object request) throws IOException {
-        if (request instanceof CatView) {
-            render((CatView) request);
+        if (request instanceof MouseView) {
+            render((MouseView) request);
             return false;
         }
 

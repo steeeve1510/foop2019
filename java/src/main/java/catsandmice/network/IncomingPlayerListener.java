@@ -1,12 +1,18 @@
 package catsandmice.network;
 
 import catsandmice.client.cat.CatNetworkServerClient;
+import catsandmice.client.mouse.MouseNetworkServerClient;
 import catsandmice.engine.Config;
-import catsandmice.model.*;
+import catsandmice.engine.Initializer;
+import catsandmice.model.Cat;
+import catsandmice.model.Game;
+import catsandmice.model.Mouse;
+import catsandmice.model.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.stream.Collectors;
 
 public class IncomingPlayerListener implements Runnable {
 
@@ -36,9 +42,12 @@ public class IncomingPlayerListener implements Runnable {
     }
 
     Player createPlayer(Socket socket) {
-        var networkClient = new CatNetworkServerClient(socket);
-        var position = new Position(new Coordinate(0, 0), game.getBoard().getSurface());
-        return new Cat(networkClient, position);
+        var random = Math.random();
+        if (random < 0.5) {
+            return createCat(socket);
+        } else {
+            return createMouse(socket);
+        }
     }
 
     void stop() {
@@ -47,5 +56,22 @@ public class IncomingPlayerListener implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Cat createCat(Socket socket) {
+        var networkClient = new CatNetworkServerClient(socket);
+        var position = Initializer.getNewCatPosition(config, game.getBoard().getSurface());
+        return new Cat(networkClient, position);
+    }
+
+    private Mouse createMouse(Socket socket) {
+        var netWorkClient = new MouseNetworkServerClient(socket);
+        var subways = game.getBoard().getSubways();
+        var goalSubway = game.getGoalSubway();
+        var subwaysWithoutGoal = subways.stream()
+                .filter(s -> s != goalSubway)
+                .collect(Collectors.toSet());
+        var position = Initializer.getNewMousePosition(config, subwaysWithoutGoal);
+        return new Mouse(netWorkClient, position);
     }
 }

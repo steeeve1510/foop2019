@@ -2,7 +2,6 @@ package catsandmice.engine;
 
 import catsandmice.client.cat.CatBotClient;
 import catsandmice.client.cat.CatClient;
-import catsandmice.client.cat.CatUserClient;
 import catsandmice.client.mouse.MouseBotClient;
 import catsandmice.client.mouse.MouseClient;
 import catsandmice.model.*;
@@ -11,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class Initializer {
+public class Initializer {
 
     private final Config config;
 
@@ -91,7 +90,7 @@ class Initializer {
         return entrance;
     }
 
-    private Coordinate getRandomCoordinate(int maxHeight, int maxWidth) {
+    private static Coordinate getRandomCoordinate(int maxHeight, int maxWidth) {
         var x = (int) (maxWidth * Math.random());
         var y = (int) (maxHeight * Math.random());
 
@@ -99,18 +98,25 @@ class Initializer {
     }
 
     private Cat getCat(CatClient catClient, Surface surface) {
-        var coordinate = getRandomCoordinate(config.getHeight(), config.getWidth());
-
-        var position = new Position(coordinate, surface);
+        var position = getNewCatPosition(config, surface);
         return new Cat(catClient, position);
     }
 
     private Mouse getMouse(MouseClient mouseClient, Set<Subway> subways) {
+        var position = getNewMousePosition(config, subways);
+        return new Mouse(mouseClient, position);
+    }
+
+    public static Position getNewCatPosition(Config config, Surface surface) {
+        var coordinate = getRandomCoordinate(config.getHeight(), config.getWidth());
+        return new Position(coordinate, surface);
+    }
+
+    public static Position getNewMousePosition(Config config, Set<Subway> subways) {
         var coordinate = getRandomCoordinate(config.getHeight(), config.getWidth());
 
         int randomSubwayIndex = (int) (subways.size() * Math.random());
         Subway randomSubway = subways.toArray(new Subway[]{})[randomSubwayIndex];
-        var position = new Position(coordinate, randomSubway);
-        return new Mouse(mouseClient, position);
+        return new Position(coordinate, randomSubway);
     }
 }
