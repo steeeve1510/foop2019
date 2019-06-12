@@ -1,0 +1,92 @@
+@startuml
+
+class Board {
+    width: int
+    height: int
+}
+Board -- "1" Surface: surface
+Board -- "*" Subway: subways
+
+class Cat
+Cat --|> Player
+Cat -- "1" Client: client
+Cat -- "1" Position: position
+
+class Coordinate {
+    x: int
+    y: int
+}
+
+class Game{
+    _frame: int
+}
+Game -- "1" Board: board
+Game -- "1" Subway: goalSubway
+Game -- "*" Mouse: mice
+Game -- "*" Cat: cats
+
+interface Layer
+
+class Mouse
+Mouse --|> Player
+Mouse -- "1" Client: client
+Mouse -- "1" Position: position
+
+interface Player {
+    getPosition(): Position
+    setPosition(pos: Position): void
+    isDead(): boolean
+    win(): void
+    has_won(): boolean
+    make_move(game: Game): void
+    get_last_action(): int
+    gameOver(winner: String): void
+}
+
+class Position
+Position -- "1" Coordinate: coordinate
+Position -- "1" Layer: layer
+
+class Subway
+Subway --|> Layer
+Subway -- "2" Coordinate: entrances
+Subway -- "*" Coordinate: catsLastSeen
+
+class Surface
+Surface --|> Layer
+
+interface Client{
+    get_next_move(GAME): Command
+	game_over: void
+	set_player(PLAYER): void
+}
+
+class mouse_user_client
+mouse_user_client --|> Client
+
+class mouse_bot_client
+mouse_bot_client --|> Client
+
+interface Command{
+    execute(Player, Game)
+}
+
+class up_command
+up_command --|> Command
+
+class Engine
+Engine -- "1" Game: game
+Engine -- "1" View: view
+Engine -- "1" Player: user
+
+interface View{
+    render(game, player)
+}
+
+class mouse_view
+mouse_view --|> View
+
+class cat_view
+cat_view --|> View
+
+@enduml
