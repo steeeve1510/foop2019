@@ -10,6 +10,8 @@ create
 	make
 feature
 	make(w: INTEGER; h: INTEGER; sur: SURFACE; subs: LINKED_LIST[SUBWAY])
+	require
+		valid_board: w > 2 and h > 2 and subs.count > 1
 	do
 		width := w
 		height := h

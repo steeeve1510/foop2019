@@ -13,6 +13,7 @@ feature
 	local
 		players: LINKED_LIST [PLAYER]
 	do
+		print("Frame: " + game.get_frame.out + "%N")
 		players := game.get_players
 		across players as play loop
 			print(play.item.out + "%N")

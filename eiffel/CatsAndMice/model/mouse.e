@@ -87,12 +87,16 @@ feature
 	local
 		state: STRING
 	do
+		create state.make_empty
+		if attached {MOUSE_USER_CLIENT} client then
+			state := "Player "
+		end
 		if dead then
-			state := "Mouse Dead"
+			state := state +"Mouse Dead"
 		elseif won then
-			state := "Mouse Won"
+			state := state +"Mouse Won"
 		else
-			state := "Mouse at " + position.out
+			state := state + "Mouse at " + position.out
 		end
 		Result := state
 	end

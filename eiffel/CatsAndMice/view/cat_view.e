@@ -12,8 +12,8 @@ feature
 	render(game: GAME; player: detachable PLAYER)
 	local
 		players: LINKED_LIST [PLAYER]
-		layer: LAYER
 	do
+		print("Frame: " + game.get_frame.out + "%N")
 		players := game.get_players
 		across players as play loop
 			if play.item.get_position.is_on_surface then

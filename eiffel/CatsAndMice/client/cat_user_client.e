@@ -1,12 +1,11 @@
 note
-	description: "Summary description for {MOUSE_USER_CLIENT}."
+	description: "Summary description for {CAT_USER_CLIENT}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	MOUSE_USER_CLIENT
-
+	CAT_USER_CLIENT
 inherit
 	CLIENT
 feature
@@ -21,9 +20,8 @@ feature
 			until
 				valid = true
 			loop
-				print("WASD<.(ENTER):")
-				io.read_character
-				key := io.lastchar
+				print("WASD.(ENTER):")
+				key := read_char
 				valid := true
 				inspect key
 					when 'w' then
@@ -34,10 +32,8 @@ feature
 						Result:= create {LEFT_COMMAND}
 					when 'd' then
 						Result:= create {RIGHT_COMMAND}
-					when '<' then
-						Result:= create {LAYER_COMMAND}
 					when '.' then
-						Result:= create {LAYER_COMMAND}
+						Result:= void
 					else
 						valid:= false
 				end
@@ -56,7 +52,7 @@ feature
 	game_over
 	do
 	end
-	set_player(m: MOUSE)
+	set_player(m: CAT)
 	do
 		player := m
 	end

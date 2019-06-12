@@ -37,7 +37,7 @@ feature
 						nearest := {BOT_UTIL}.get_nearest_exit(layer_sub, game.get_goal_subway)
 					end
 				else
-					print ("ERROR not a subway %N")
+					print ("ERROR not a subway there"+ pos.get_coordinate.out +" %N")
 				end
 			end
 			--print ("Mouse Target:  "+ nearest.out + "%N")

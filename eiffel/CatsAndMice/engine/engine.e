@@ -30,6 +30,9 @@ feature
 			print("Subway "+ subi.item.out+"%N")
 		end
 		print("Goal is subway "+ game.get_goal_subway.get_id.out+ "%N")
+		io.putstring ("Press ENTER to continue.")
+		io.read_character
+		--Game Loop
 		from
 			stop := false
 			frame := 0
@@ -53,7 +56,6 @@ feature
 			game.frame_inc
 			stop := finished = mice.count
 			frame := frame + 1
-			print(frame.out + "%N")
 		end
 		players := game.get_players
 			across players as play loop
@@ -77,11 +79,6 @@ feature
 		across mice as mouse_i loop
 			if not mouse_i.item.is_dead and then mouse_i.item.is_on_surface then
 				mouse_coord := mouse_i.item.get_position.get_coordinate
-				--across cat_coords as cat_i loop
-					--if cat_i.item.is_equal(mouse_coord) then
-						--mouse_i.item.kill
-						--print ("Mouse killed at " + mouse_coord.out + "%N")
-					--end
 				if across cat_coords as cat_i some cat_i.item.is_equal(mouse_coord) end then
 					mouse_i.item.kill
 					print ("Mouse killed at " + mouse_coord.out + "%N")

@@ -15,6 +15,7 @@ feature
 		layer: LAYER
 		cats: LINKED_LIST[COORDINATE]
 	do
+		print("Frame: " + game.get_frame.out + "%N")
 		players := game.get_players
 		if player = void then
 			layer := game.get_board.get_surface
