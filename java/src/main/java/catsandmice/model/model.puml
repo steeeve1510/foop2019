@@ -1,0 +1,67 @@
+@startuml
+
+class Board {
+    width: int
+    height: int
+}
+Board -- "1" Surface: surface
+Board -- "*" Subway: subways
+
+class Cat
+Cat --|> Player
+Cat -- "1" CatClient: catClient
+Cat -- "1" Position: position
+
+class Coordinate {
+    x: int
+    y: int
+}
+
+class Game
+Game -- "1" Board: board
+Game -- "1" Subway: goalSubway
+Game -- "*" Mouse: mice
+Game -- "*" Cat: cats
+
+interface Layer
+
+class Mouse {
+    isDead: boolean
+}
+Mouse --|> Player
+Mouse -- "1" MouseClient: mouseClient
+Mouse -- "1" Position: position
+
+interface Player {
+    getPosition(): Position
+    setPosition(pos: Position): void
+    isDead(): boolean
+    getNextMove(): Command
+    update(game: Game)
+    gameOver(winner: String)
+}
+
+class Position
+Position -- "1" Coordinate: coordinate
+Position -- "1" Layer: layer
+
+class Subway
+Subway --|> Layer
+Subway -- "*" Coordinate: entrances
+Subway -- "*" Coordinate: catsLastSeen
+
+class Surface
+Surface --|> Layer
+
+interface CatClient {
+    getNextMove(): Command
+    gameOver(winner: String): void
+    render(view: CatView): void
+}
+interface MouseClient {
+    getNextMove(): Command
+    gameOver(winner: String): void
+    render(view: MouseView): void
+}
+
+@enduml
