@@ -14,7 +14,9 @@ feature
 		configuration := a_config
 	end
 feature
-	init_game : GAME
+	init_game(seed: INTEGER): GAME
+	require
+		non_negative: seed >= 0
 	local
 		surface : SURFACE
 		board : BOARD
@@ -24,15 +26,17 @@ feature
 		subways: LINKED_LIST[SUBWAY]
 	do
 		create surface
-		subways := init_subways
+		subways := init_subways(seed)
 		create board.make(configuration.get_width, configuration.get_height, surface, subways)
-		mice := init_mice(subways)
-		cats := init_cats(surface)
+		mice := init_mice(seed, subways)
+		cats := init_cats(seed, surface)
 		create game.make(board, subways.at (configuration.get_number_subways), mice, cats)
 		Result := game
+	ensure
+		Result /= void
 	end
-feature
-	init_subways: LINKED_LIST [SUBWAY]
+feature {NONE} -- private methods
+	init_subways(seed: INTEGER): LINKED_LIST [SUBWAY]
 	local
 		subways: LINKED_LIST [SUBWAY]
 		stop: BOOLEAN
@@ -47,7 +51,7 @@ feature
 		create coord2.make (0,0)
 		from
 		    i := 0
-		    create RNG.set_seed (42)
+		    create RNG.set_seed (seed)
 		    RNG.start
 		until
 		    i >= configuration.get_number_subways
@@ -62,10 +66,10 @@ feature
 				a_y := RNG.item \\ configuration.get_height
 				RNG.forth
 			    create coord1.make (a_x, a_y)
-			    if not entrances.has(coord1) then
-			    	entrances.extend (coord1)
+			    if not (across entrances as ent_i some ent_i.item.is_equal(coord1) end) then
+					entrances.extend (coord1)
 			    	stop := true
-			    end
+				end
 			end
 			from
 			    stop := false
@@ -77,18 +81,20 @@ feature
 				a_y := RNG.item \\ configuration.get_height
 				RNG.forth
 			    create coord2.make (a_x, a_y)
-			    if not entrances.has(coord2) then
-			    	entrances.extend (coord2)
+			    if not (across entrances as ent_i some ent_i.item.is_equal(coord2) end) then
+					entrances.extend (coord2)
 			    	stop := true
-			    end
+				end
 			end
 			subways.extend (create {SUBWAY}.make (i, coord1, coord2))
 		    i := i + 1
 		end
 		Result := subways
+	ensure
+		Result.count = configuration.get_number_subways
 	end
 
-	init_mice(subways : LINKED_LIST [SUBWAY]) : LINKED_LIST [MOUSE]
+	init_mice(seed: INTEGER; subways : LINKED_LIST [SUBWAY]) : LINKED_LIST [MOUSE]
 	local
 		mice: LINKED_LIST [MOUSE]
 		mouse: MOUSE
@@ -103,7 +109,7 @@ feature
 		create coord1.make (0,0)
 		from
 		    i := 0
-		    create RNG.set_seed (42)
+		    create RNG.set_seed (seed)
 		    RNG.start
 		until
 		    i >= configuration.get_number_mouse_bots
@@ -118,18 +124,21 @@ feature
 				a_y := RNG.item \\ configuration.get_height
 				RNG.forth
 			    create coord1.make (a_x, a_y)
-			    if not others.has(coord1) then
-			    	others.extend (coord1)
+			    if not (across others as ent_i some ent_i.item.is_equal(coord1) end) then
+					others.extend (coord1)
 			    	stop := true
-			    end
+				end
 			end
 			create mouse.make(create {POSITION}.make(coord1, subways.at (RNG.item \\ (configuration.get_number_subways - 1) + 1 )), create {MOUSE_BOT_CLIENT})
 			mice.extend (mouse)
 		    i := i + 1
 		end
 		Result := mice
+	ensure
+		Result.count = configuration.get_number_mouse_bots
 	end
-	init_cats(surface: SURFACE): LINKED_LIST [CAT]
+
+	init_cats(seed: INTEGER; surface: SURFACE): LINKED_LIST [CAT]
 	local
 		cats: LINKED_LIST [CAT]
 		cat: CAT
@@ -144,7 +153,7 @@ feature
 		create coord1.make (0,0)
 		from
 		    i := 0
-		    create RNG.set_seed (42)
+		    create RNG.set_seed (seed)
 		    RNG.start
 		until
 		    i >= configuration.get_number_cat_bots
@@ -159,17 +168,20 @@ feature
 				a_y := RNG.item \\ configuration.get_height
 				RNG.forth
 			    create coord1.make (a_x, a_y)
-			    if not others.has(coord1) then
-			    	others.extend (coord1)
+			    if not (across others as ent_i some ent_i.item.is_equal(coord1) end) then
+					others.extend (coord1)
 			    	stop := true
-			    end
+				end
 			end
 			create cat.make(create {POSITION}.make(coord1, surface), create {CAT_BOT_CLIENT})
 			cats.extend (cat)
 		    i := i + 1
 		end
 		Result := cats
+	ensure
+		Result.count = configuration.get_number_cat_bots
 	end
+
 feature {NONE}
 	configuration : CONFIGURATION
 end

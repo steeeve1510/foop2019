@@ -25,7 +25,7 @@ feature {NONE} -- Initialization
 			-- height, width , win_h, win_w, cats, mice, subs
 			create config.make(10, 10, 1, 1, 2, 4, 3)
 			create initer.make(config)
-			game := initer.init_game
+			game := initer.init_game(43)
 			view := create {OVER_VIEW}
 			create engine.make(game, view, void)
 			engine.run

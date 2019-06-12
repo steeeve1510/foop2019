@@ -10,6 +10,8 @@ create
 
 feature
     make (a_x, a_y: INTEGER)
+    	require
+			non_negative: a_x >= 0 and a_y >= 0
         do
             set_x (a_x)
             set_y (a_y)

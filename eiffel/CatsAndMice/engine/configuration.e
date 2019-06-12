@@ -10,6 +10,8 @@ create
 	make
 feature
 	make(h: INTEGER; w: INTEGER; w_h: INTEGER; w_w: INTEGER; cats: INTEGER; mice: INTEGER; subs: INTEGER)
+	require
+		positive: w > 0 and h > 0 and w_h > 0 and w_w > 0 and cats >= 0 and mice >= 0 and subs >= 2
 	do
 		height := h
 		width := w

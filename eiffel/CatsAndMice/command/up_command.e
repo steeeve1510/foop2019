@@ -19,5 +19,8 @@ feature
 		if a_y < game.get_board.get_height then
 			player.set_position (create {POSITION}.make ( create {COORDINATE}.make (a_x, a_y + 1), curr_pos.get_layer))
 		end
+	ensure then
+		in_x: player.get_position.get_coordinate.get_x >= 0 and player.get_position.get_coordinate.get_x <= game.get_board.get_width
+		in_y: player.get_position.get_coordinate.get_y >= 0 and player.get_position.get_coordinate.get_x <= game.get_board.get_height
 	end
 end
